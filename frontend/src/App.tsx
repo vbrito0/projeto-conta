@@ -1,6 +1,6 @@
-import Header from "./components/Header"
+import Header from "./components/Header";
 
-import CardVendas from "./components/CardVendas"
+import CardVendas from "./components/CardVendas";
 
 function App() {
   return(
@@ -17,4 +17,4 @@ function App() {
   )
 }
 
-export default App
+export default App;
