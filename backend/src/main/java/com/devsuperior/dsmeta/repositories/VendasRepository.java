@@ -11,6 +11,6 @@ import com.devsuperior.dsmeta.entities.Vendas;
 
 public interface VendasRepository extends JpaRepository<Vendas, Long>{
 	
-	@Query("SELECT obj FROM Venda obj WHERE obj.date BETWEEN :min AND :max ORDER BY obj.amount DESC")
+	@Query("SELECT obj FROM Vendas obj WHERE obj.date BETWEEN :min AND :max ORDER BY obj.amount DESC")
 	Page<Vendas> findVendas(LocalDate min, LocalDate max, Pageable pageable);
 }
