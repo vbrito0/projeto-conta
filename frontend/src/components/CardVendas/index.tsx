@@ -3,21 +3,25 @@ import './styles.css';
 
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axios from 'axios';
+import { BASE_URL } from '../../utils/request';
+import { Venda } from '../../models/vendas';
 
 function CardVendas() {
-    
+
     const min = new Date(new Date().setDate(new Date().getDate() - 365));
     const max = new Date();
 
     const [minDate, setMinDate] = useState(new Date());
     const [maxDate, setMaxDate] = useState(new Date());
 
+    const [vendas, setVendas] = useState<Venda[]>([]);
+
     useEffect(() => {
-        axios.get("http://localhost:8080/vendas")
+        axios.get(`${BASE_URL}/vendas`)
             .then(response => {
-                console.log(response.data);
+                setVendas(response.data.content);
             });
     }, []);
 
@@ -57,45 +61,23 @@ function CardVendas() {
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td className="dsmeta-show-992">#341</td>
-                            <td className="dsmeta-show-576">09/08/2022</td>
-                            <td>Victor</td>
-                            <td className="dsmeta-show-992">15</td>
-                            <td className="dsmeta-show-992">11</td>
-                            <td>R$ 55300.00</td>
-                            <td>
-                                <div className="dsmeta-red-btn-container">
-                                    <NotificationButton />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="dsmeta-show-992">#341</td>
-                            <td className="dsmeta-show-576">09/08/2022</td>
-                            <td>Victor</td>
-                            <td className="dsmeta-show-992">15</td>
-                            <td className="dsmeta-show-992">11</td>
-                            <td>R$ 55300.00</td>
-                            <td>
-                                <div className="dsmeta-red-btn-container">
-                                    <NotificationButton />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td className="dsmeta-show-992">#341</td>
-                            <td className="dsmeta-show-576">09/08/2022</td>
-                            <td>Victor</td>
-                            <td className="dsmeta-show-992">15</td>
-                            <td className="dsmeta-show-992">11</td>
-                            <td>R$ 55300.00</td>
-                            <td>
-                                <div className="dsmeta-red-btn-container">
-                                    <NotificationButton />
-                                </div>
-                            </td>
-                        </tr>
+                        {vendas.map(venda => {
+                           return (
+                           <tr key={venda.id}>
+                                <td className="dsmeta-show-992">{venda.id}</td>
+                                <td className="dsmeta-show-576">{new Date(venda.date).toDateString()}</td>
+                                <td>{venda.sellerName}</td>
+                                <td className="dsmeta-show-992">{venda.visited}</td>
+                                <td className="dsmeta-show-992">{venda.deals}</td>
+                                <td>R$ {venda.amount.toFixed(2)}</td>
+                                <td>
+                                    <div className="dsmeta-red-btn-container">
+                                        <NotificationButton />
+                                    </div>
+                                </td>
+                            </tr>
+                            )
+                        })}
                     </tbody>
                 </table>
             </div>
